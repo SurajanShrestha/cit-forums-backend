@@ -8,4 +8,14 @@ router
     .get(userController.getAllUsers)
     .post(userController.createUser);
 
+router
+    .route('/:userId')
+    .get(userController.getSingleUser)
+    .delete(userController.deleteSingleUser)
+    .patch(userController.updateSingleUser);
+
+router
+    .route('/login')
+    .post(userController.loginUser);
+
 module.exports = router;

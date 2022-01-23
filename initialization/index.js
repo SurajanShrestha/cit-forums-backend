@@ -13,12 +13,62 @@ async function testDbConnection() {
 
 // Sync all models
 async function syncAllModels(force = false) {
-    Role.hasOne(User, {
+    // Relation between User and Role
+    Role.hasMany(User, {
         foreignKey: {
             allowNull: false
         }
     });
     User.belongsTo(Role);
+
+    // Relation between Topic and User
+    User.hasMany(Topic, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Topic.belongsTo(User);
+
+    // Relation between Topic and Category
+    Category.hasMany(Topic, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Topic.belongsTo(Category);
+
+    // Relation between Post and User
+    User.hasMany(Post, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Post.belongsTo(User);
+
+    // Relation between Post and Topic
+    Topic.hasMany(Post, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Post.belongsTo(Topic);
+
+    // Relation between Reply and Post
+    Post.hasMany(Reply, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Reply.belongsTo(Post);
+
+    // Relation between Reply and User
+    User.hasMany(Reply, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
+    Reply.belongsTo(User);
+
     try {
         await sequelize.sync({ force });
         console.log('||*****All Models were synchronized successfully*****||');

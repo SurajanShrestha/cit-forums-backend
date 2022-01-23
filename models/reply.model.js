@@ -5,10 +5,16 @@ const Reply = sequelize.define('Reply', {
     content: {
         type: DataTypes.STRING,
         validate: {
-            len: [10, 200],
+            len: [2, 200],
         },
         allowNull: false,
     },
+    likes: {
+        type: DataTypes.INTEGER,
+    },
+    replyToId: {
+        type: DataTypes.INTEGER,
+    }
 });
 
 module.exports = Reply;

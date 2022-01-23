@@ -9,6 +9,9 @@ const Post = sequelize.define('Post', {
         },
         allowNull: false,
     },
+    likes: {
+        type: DataTypes.INTEGER,
+    }
 });
 
 module.exports = Post;

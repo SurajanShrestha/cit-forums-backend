@@ -49,11 +49,14 @@ syncAllModels();
 
 // syncCategoriesToDb([{ name: 'Science' }, { name: 'Maths' }]);
 
-// syncTopicsToDb([{ title: 'College Canteen is full of rats' }, { title: "It's lockdown. No one's even discussing about Discount." }]);
+// syncTopicsToDb([{ title: 'College Canteen is full of rats', UserId: 1, CategoryId: 2 },
+// { title: "It's lockdown. No one's even discussing about Discount.", UserId: 1, CategoryId: 2 }], true);
 
-// syncPostsToDb([{ content: "Your inability to understand a kitchen baffles me." }, { content: "No one will do a single thing about it." }]);
+// syncPostsToDb([{ content: "Your inability to understand a kitchen baffles me.", UserId: 1, TopicId: 2 },
+// { content: "No one will do a single thing about it.", UserId: 3, TopicId: 1 }], true);
 
-// syncRepliesToDb([{ content: "Your inability to understand hygiene baffles me." }, { content: "Let's fight for it." }]);
+// syncRepliesToDb([{ content: "Your inability to understand hygiene baffles me.", UserId: 1, PostId: 3 },
+// { content: "Let's fight for it.", likes: 10, UserId: 3, PostId: 2 }], true);
 
 // Get Requests
 // app.get("/users", async (req, res) => {
