@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Topic, Post } = require('../models');
 
 // Get all users
 const getAllUsers = async () => {
@@ -8,7 +8,18 @@ const getAllUsers = async () => {
 
 // Get a single user via Primary Key
 const getSingleUser = async (primaryKey) => {
-    const user = await User.findByPk(primaryKey);
+    const user = await User.findByPk(primaryKey, {
+        include: [
+            {
+                model: Post
+            },
+            // This is called nested include. We are getting posts associated with that certain topic
+            {
+                model: Topic,
+                include: [Post, User]
+            }
+        ]
+    });
     return user;
 };
 

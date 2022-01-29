@@ -12,6 +12,19 @@ const getAllTopics = async (req, res) => {
     }
 };
 
+// Get a single topic via Primary Key
+const getSingleTopic = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { topicId } = req.params;
+        const topic = await topicService.getSingleTopic(topicId);
+        res.json(topic);
+    } catch (err) {
+        console.log('Topic could not be found. Error: ' + err);
+        res.status(404).json({ message: 'Topic could not be found' });
+    }
+};
+
 // Create a topic
 const createTopic = async (req, res) => {
     try {
@@ -42,6 +55,7 @@ const deleteSingleTopic = async (req, res) => {
 
 module.exports = {
     getAllTopics,
+    getSingleTopic,
     createTopic,
     deleteSingleTopic,
 };

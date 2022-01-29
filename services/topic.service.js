@@ -1,4 +1,4 @@
-const { Topic, User, Post } = require('../models');
+const { Topic, User, Post, Category } = require('../models');
 
 // Get all topics
 const getAllTopics = async () => {
@@ -11,6 +11,12 @@ const getAllTopics = async () => {
     */
     const topics = await Topic.findAll({ include: [User, Post] });
     return topics;
+};
+
+// Get a single topic via Primary Key
+const getSingleTopic = async (primaryKey) => {
+    const foundTopic = await Topic.findByPk(primaryKey, { include: [Category, Post] });
+    return foundTopic;
 };
 
 // Create/Register a topic
@@ -28,6 +34,7 @@ const deleteSingleTopic = async (primaryKey) => {
 
 module.exports = {
     getAllTopics,
+    getSingleTopic,
     createTopic,
     deleteSingleTopic,
 };

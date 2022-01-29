@@ -10,6 +10,7 @@ router
 
 router
     .route('/:topicId')
+    .get(topicController.getSingleTopic)
     .delete(topicController.deleteSingleTopic);
 
 module.exports = router;

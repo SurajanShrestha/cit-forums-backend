@@ -13,6 +13,19 @@ const getAllPosts = async (req, res) => {
     }
 };
 
+// Get specific posts by a certain TopicId using Query Parameters
+const getPostsByTopicId = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { TopicId } = req.query;
+        const posts = await postService.getPostsByTopicId(TopicId);
+        res.json(posts);
+    } catch (err) {
+        console.log('Posts not found. Error: ' + err);
+        res.status(404).json({ message: 'Posts could not be found' });
+    }
+};
+
 // Create a post
 const createPost = async (req, res) => {
     try {
@@ -63,6 +76,7 @@ const updateSinglePost = async (req, res) => {
 
 module.exports = {
     getAllPosts,
+    getPostsByTopicId,
     createPost,
     deleteSinglePost,
     updateSinglePost,

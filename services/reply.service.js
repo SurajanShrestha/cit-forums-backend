@@ -1,8 +1,19 @@
-const { Reply } = require('../models');
+const { Reply, User } = require('../models');
 
 // Get all replies
 const getAllReplies = async () => {
     const replies = await Reply.findAll();
+    return replies;
+};
+
+// Get specific replies related to certain PostId
+const getRepliesByPostId = async (postId) => {
+    const replies = await Reply.findAll({
+        where: {
+            PostId: postId
+        },
+        include: [User]
+    });
     return replies;
 };
 
@@ -35,6 +46,7 @@ const updateSingleReply = async (primaryKey, updatePayload) => {
 
 module.exports = {
     getAllReplies,
+    getRepliesByPostId,
     createReply,
     deleteSingleReply,
     updateSingleReply,

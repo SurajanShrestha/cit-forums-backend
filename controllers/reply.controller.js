@@ -13,6 +13,20 @@ const getAllReplies = async (req, res) => {
     }
 };
 
+// Get specific replies by a certain PostId using Query Parameters
+const getRepliesByPostId = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { PostId } = req.query;
+        console.log(PostId);
+        const replies = await replyService.getRepliesByPostId(PostId);
+        res.json(replies);
+    } catch (err) {
+        console.log('Replies not found. Error: ' + err);
+        res.status(404).json({ message: 'Replies could not be found' });
+    }
+};
+
 // Create a reply
 const createReply = async (req, res) => {
     try {
@@ -63,6 +77,7 @@ const updateSingleReply = async (req, res) => {
 
 module.exports = {
     getAllReplies,
+    getRepliesByPostId,
     createReply,
     deleteSingleReply,
     updateSingleReply,

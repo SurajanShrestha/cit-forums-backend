@@ -13,4 +13,8 @@ router
     .delete(replyController.deleteSingleReply)
     .patch(replyController.updateSingleReply);
 
+router
+    .route('/byPostId')
+    .get(replyController.getRepliesByPostId);
+
 module.exports = router;
