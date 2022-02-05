@@ -6,8 +6,17 @@ const getAllReplies = async () => {
     return replies;
 };
 
+// Get a single reply via Primary Key
+const getSingleReply = async (primaryKey) => {
+    const reply = await Reply.findByPk(primaryKey, {
+        include: [User]
+    });
+    return reply;
+};
+
 // Get specific replies related to certain PostId
 const getRepliesByPostId = async (postId) => {
+    console.log(postId);
     const replies = await Reply.findAll({
         where: {
             PostId: postId
@@ -46,6 +55,7 @@ const updateSingleReply = async (primaryKey, updatePayload) => {
 
 module.exports = {
     getAllReplies,
+    getSingleReply,
     getRepliesByPostId,
     createReply,
     deleteSingleReply,

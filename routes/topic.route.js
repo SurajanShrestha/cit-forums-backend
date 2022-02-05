@@ -9,6 +9,10 @@ router
     .post(topicController.createTopic);
 
 router
+    .route('/byCategoryId')
+    .get(topicController.getTopicsByCategoryId);
+
+router
     .route('/:topicId')
     .get(topicController.getSingleTopic)
     .delete(topicController.deleteSingleTopic);

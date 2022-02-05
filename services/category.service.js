@@ -12,6 +12,12 @@ const getAllCategories = async () => {
     return categories;
 };
 
+// Get a single category via Primary Key
+const getSingleCategory = async (primaryKey) => {
+    const foundCategory = await Category.findByPk(primaryKey, { include: [Topic] });
+    return foundCategory;
+};
+
 // Create/Register a category
 const createCategory = async (name) => {
     const category = await Category.create({ name });
@@ -27,6 +33,7 @@ const deleteSingleCategory = async (primaryKey) => {
 
 module.exports = {
     getAllCategories,
+    getSingleCategory,
     createCategory,
     deleteSingleCategory,
 };

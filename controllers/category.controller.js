@@ -12,6 +12,19 @@ const getAllCategories = async (req, res) => {
     }
 };
 
+// Get a single category via Primary Key
+const getSingleCategory = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { categoryId } = req.params;
+        const category = await categoryService.getSingleCategory(categoryId);
+        res.json(category);
+    } catch (err) {
+        console.log('Category not found. Error: ' + err);
+        res.status(404).json({ message: 'Category could not be found' });
+    }
+};
+
 // Create a category
 const createCategory = async (req, res) => {
     try {
@@ -42,6 +55,7 @@ const deleteSingleCategory = async (req, res) => {
 
 module.exports = {
     getAllCategories,
+    getSingleCategory,
     createCategory,
     deleteSingleCategory,
 };

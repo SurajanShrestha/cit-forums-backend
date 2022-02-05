@@ -10,6 +10,7 @@ router
 
 router
     .route('/:categoryId')
+    .get(categoryController.getSingleCategory)
     .delete(categoryController.deleteSingleCategory);
 
 module.exports = router;

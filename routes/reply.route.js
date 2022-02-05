@@ -9,12 +9,13 @@ router
     .post(replyController.createReply);
 
 router
-    .route('/:replyId')
-    .delete(replyController.deleteSingleReply)
-    .patch(replyController.updateSingleReply);
-
-router
     .route('/byPostId')
     .get(replyController.getRepliesByPostId);
+
+router
+    .route('/:replyId')
+    .get(replyController.getSingleReply)
+    .delete(replyController.deleteSingleReply)
+    .patch(replyController.updateSingleReply);
 
 module.exports = router;

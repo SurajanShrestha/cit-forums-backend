@@ -19,6 +19,17 @@ const getSingleTopic = async (primaryKey) => {
     return foundTopic;
 };
 
+// Get a topics via Category Id
+const getTopicsByCategoryId = async (catId) => {
+    const foundTopics = await Topic.findAll({
+        where: {
+            CategoryId: catId
+        },
+        include: [User, Post]
+    });
+    return foundTopics;
+};
+
 // Create/Register a topic
 const createTopic = async (payload) => {
     const topic = await Topic.create(payload);
@@ -35,6 +46,7 @@ const deleteSingleTopic = async (primaryKey) => {
 module.exports = {
     getAllTopics,
     getSingleTopic,
+    getTopicsByCategoryId,
     createTopic,
     deleteSingleTopic,
 };

@@ -25,6 +25,19 @@ const getSingleTopic = async (req, res) => {
     }
 };
 
+// Get specific topics by a certain TopicId using Query Parameters
+const getTopicsByCategoryId = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { CategoryId } = req.query;
+        const topics = await topicService.getTopicsByCategoryId(CategoryId);
+        res.json(topics);
+    } catch (err) {
+        console.log('Topics not found. Error: ' + err);
+        res.status(404).json({ message: 'Topics could not be found' });
+    }
+};
+
 // Create a topic
 const createTopic = async (req, res) => {
     try {
@@ -56,6 +69,7 @@ const deleteSingleTopic = async (req, res) => {
 module.exports = {
     getAllTopics,
     getSingleTopic,
+    getTopicsByCategoryId,
     createTopic,
     deleteSingleTopic,
 };

@@ -13,6 +13,23 @@ const getAllReplies = async (req, res) => {
     }
 };
 
+// Get a single reply via Primary Key
+const getSingleReply = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { replyId } = req.params;
+        const reply = await replyService.getSingleReply(replyId);
+        if (reply) {
+            res.json(reply);
+        } else {
+            throw new ApiError(404, 'Reply not found');
+        }
+    } catch (err) {
+        console.log('Reply not found. Error: ' + err);
+        res.status(404).json({ message: 'Reply could not be found' });
+    }
+};
+
 // Get specific replies by a certain PostId using Query Parameters
 const getRepliesByPostId = async (req, res) => {
     try {
@@ -77,6 +94,7 @@ const updateSingleReply = async (req, res) => {
 
 module.exports = {
     getAllReplies,
+    getSingleReply,
     getRepliesByPostId,
     createReply,
     deleteSingleReply,
