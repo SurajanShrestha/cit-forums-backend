@@ -9,6 +9,10 @@ router
     .post(topicController.createTopic);
 
 router
+    .route('/search')
+    .get(topicController.getTopicsBySimilarTitles);
+
+router
     .route('/byCategoryId')
     .get(topicController.getTopicsByCategoryId);
 

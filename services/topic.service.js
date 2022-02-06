@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Topic, User, Post, Category } = require('../models');
 
 // Get all topics
@@ -19,11 +20,24 @@ const getSingleTopic = async (primaryKey) => {
     return foundTopic;
 };
 
-// Get a topics via Category Id
+// Get topics via Category Id
 const getTopicsByCategoryId = async (catId) => {
     const foundTopics = await Topic.findAll({
         where: {
             CategoryId: catId
+        },
+        include: [User, Post]
+    });
+    return foundTopics;
+};
+
+// Search for topics via similar topic titles
+const getTopicsBySimilarTitles = async (title) => {
+    const foundTopics = await Topic.findAll({
+        where: {
+            title: {
+                [Op.like]: '%' + title + '%'
+            }
         },
         include: [User, Post]
     });
@@ -47,6 +61,7 @@ module.exports = {
     getAllTopics,
     getSingleTopic,
     getTopicsByCategoryId,
+    getTopicsBySimilarTitles,
     createTopic,
     deleteSingleTopic,
 };

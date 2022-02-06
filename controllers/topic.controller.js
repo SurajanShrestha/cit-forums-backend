@@ -38,6 +38,19 @@ const getTopicsByCategoryId = async (req, res) => {
     }
 };
 
+// Get topics by similar topic titles
+const getTopicsBySimilarTitles = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { title } = req.query;
+        const topics = await topicService.getTopicsBySimilarTitles(title);
+        res.json(topics);
+    } catch (err) {
+        console.log('Topics not found. Error: ' + err);
+        res.status(404).json({ message: 'Topics could not be found' });
+    }
+};
+
 // Create a topic
 const createTopic = async (req, res) => {
     try {
@@ -70,6 +83,7 @@ module.exports = {
     getAllTopics,
     getSingleTopic,
     getTopicsByCategoryId,
+    getTopicsBySimilarTitles,
     createTopic,
     deleteSingleTopic,
 };
