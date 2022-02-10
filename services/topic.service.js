@@ -44,6 +44,17 @@ const getTopicsBySimilarTitles = async (title) => {
     return foundTopics;
 };
 
+// Get latest topics
+const getLatestTopics = async (limitNum) => {
+    const foundTopics = await Topic.findAll({
+        order: [
+            ['createdAt', 'DESC'],
+        ],
+        limit: limitNum ? parseInt(limitNum, 10) : 5
+    });
+    return foundTopics;
+};
+
 // Create/Register a topic
 const createTopic = async (payload) => {
     const topic = await Topic.create(payload);
@@ -62,6 +73,7 @@ module.exports = {
     getSingleTopic,
     getTopicsByCategoryId,
     getTopicsBySimilarTitles,
+    getLatestTopics,
     createTopic,
     deleteSingleTopic,
 };

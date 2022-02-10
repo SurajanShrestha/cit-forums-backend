@@ -51,6 +51,19 @@ const getTopicsBySimilarTitles = async (req, res) => {
     }
 };
 
+// Get latest topics
+const getLatestTopics = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { limit } = req.query;
+        const topics = await topicService.getLatestTopics(limit);
+        res.json(topics);
+    } catch (err) {
+        console.log('Topics not found. Error: ' + err);
+        res.status(404).json({ message: 'Topics could not be found' });
+    }
+};
+
 // Create a topic
 const createTopic = async (req, res) => {
     try {
@@ -84,6 +97,7 @@ module.exports = {
     getSingleTopic,
     getTopicsByCategoryId,
     getTopicsBySimilarTitles,
+    getLatestTopics,
     createTopic,
     deleteSingleTopic,
 };

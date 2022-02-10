@@ -13,6 +13,10 @@ router
     .get(topicController.getTopicsBySimilarTitles);
 
 router
+    .route('/latest')
+    .get(topicController.getLatestTopics);
+
+router
     .route('/byCategoryId')
     .get(topicController.getTopicsByCategoryId);
 
