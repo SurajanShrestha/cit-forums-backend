@@ -51,6 +51,22 @@ const loginUser = async (req, res) => {
     }
 };
 
+// Login Admin
+const loginAdmin = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const user = await userService.loginAdmin(req.body);
+        if (user) {
+            res.json({ message: 'Login Successful', user });
+        } else {
+            throw new ApiError(404, 'Admin not found');
+        }
+    } catch (err) {
+        console.log('Admin could not be logged in. Error: ' + err);
+        res.status(404).json({ message: 'Admin could not be logged in' });
+    }
+};
+
 // Create a user
 const createUser = async (req, res) => {
     try {
@@ -102,6 +118,7 @@ module.exports = {
     getAllUsers,
     getSingleUser,
     loginUser,
+    loginAdmin,
     createUser,
     deleteSingleUser,
     updateSingleUser,

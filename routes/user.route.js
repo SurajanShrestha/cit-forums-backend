@@ -15,6 +15,10 @@ router
     .patch(userController.updateSingleUser);
 
 router
+    .route('/login/admin')
+    .post(userController.loginAdmin);
+
+router
     .route('/login')
     .post(userController.loginUser);
 

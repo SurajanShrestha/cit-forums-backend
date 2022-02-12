@@ -34,6 +34,18 @@ const loginUser = async (payload) => {
     return user;
 };
 
+// Login/Find Admin by credentials
+const loginAdmin = async (payload) => {
+    const user = await User.findOne({
+        where: {
+            email: payload.email,
+            password: payload.password,
+            RoleId: 1
+        }
+    });
+    return user;
+};
+
 // Create/Register a user
 const createUser = async (payload) => {
     const user = await User.create(payload);
@@ -68,6 +80,7 @@ module.exports = {
     getAllUsers,
     getSingleUser,
     loginUser,
+    loginAdmin,
     createUser,
     deleteSingleUser,
     updateSingleUser,
