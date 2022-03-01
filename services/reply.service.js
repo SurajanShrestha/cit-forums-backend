@@ -1,4 +1,4 @@
-const { Reply, User } = require('../models');
+const { Topic, Post, Reply, User } = require('../models');
 
 // Get all replies
 const getAllReplies = async () => {
@@ -22,6 +22,25 @@ const getRepliesByPostId = async (postId) => {
             PostId: postId
         },
         include: [User]
+    });
+    return replies;
+};
+
+// Get all replies ordered together with respect to post title
+const getRepliesOrderedByPostTitle = async () => {
+    const replies = await Reply.findAll({
+        order: [
+            [Post, 'content', 'ASC'],
+        ],
+        include: [
+            {
+                model: User
+            },
+            {
+                model: Post,
+                include: [Topic]
+            }
+        ]
     });
     return replies;
 };
@@ -57,6 +76,7 @@ module.exports = {
     getAllReplies,
     getSingleReply,
     getRepliesByPostId,
+    getRepliesOrderedByPostTitle,
     createReply,
     deleteSingleReply,
     updateSingleReply,

@@ -10,12 +10,16 @@ router
     .post(postController.createPost);
 
 router
+    .route('/byTopicId')
+    .get(postController.getPostsByTopicId);
+
+router
+    .route('/orderedByTopicTitle')
+    .get(postController.getPostsOrderedByTopicTitle);
+
+router
     .route('/:postId')
     .delete(postController.deleteSinglePost)
     .patch(postController.updateSinglePost);
-
-router
-    .route('/byTopicId')
-    .get(postController.getPostsByTopicId);
 
 module.exports = router;

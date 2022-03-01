@@ -20,6 +20,7 @@ router
     .route('/byCategoryId')
     .get(topicController.getTopicsByCategoryId);
 
+// Mostly the route params router will be kept at last to not override other routes in the same level
 router
     .route('/:topicId')
     .get(topicController.getSingleTopic)

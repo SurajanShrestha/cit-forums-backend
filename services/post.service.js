@@ -1,4 +1,4 @@
-const { Post, Reply, User } = require('../models');
+const { Post, Reply, User, Topic } = require('../models');
 
 // Get all posts
 const getAllPosts = async () => {
@@ -13,6 +13,17 @@ const getPostsByTopicId = async (topicId) => {
             TopicId: topicId
         },
         include: [User, Reply]
+    });
+    return posts;
+};
+
+// Get all posts ordered together with respect to topic title
+const getPostsOrderedByTopicTitle = async () => {
+    const posts = await Post.findAll({
+        order: [
+            [Topic, 'title', 'ASC'],
+        ],
+        include: [User, Topic, Reply]
     });
     return posts;
 };
@@ -47,6 +58,7 @@ const updateSinglePost = async (primaryKey, updatePayload) => {
 module.exports = {
     getAllPosts,
     getPostsByTopicId,
+    getPostsOrderedByTopicTitle,
     createPost,
     deleteSinglePost,
     updateSinglePost,

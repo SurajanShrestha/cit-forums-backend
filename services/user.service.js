@@ -13,7 +13,7 @@ const getSingleUser = async (primaryKey) => {
             {
                 model: Post
             },
-            // This is called nested include. We are getting posts associated with that certain topic
+            // This is called nested include. We are getting posts and users associated with that certain topic
             {
                 model: Topic,
                 include: [Post, User]

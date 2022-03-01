@@ -35,8 +35,19 @@ const getRepliesByPostId = async (req, res) => {
     try {
         console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
         const { PostId } = req.query;
-        console.log(PostId);
         const replies = await replyService.getRepliesByPostId(PostId);
+        res.json(replies);
+    } catch (err) {
+        console.log('Replies not found. Error: ' + err);
+        res.status(404).json({ message: 'Replies could not be found' });
+    }
+};
+
+// Get all replies ordered together with respect to post title
+const getRepliesOrderedByPostTitle = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const replies = await replyService.getRepliesOrderedByPostTitle();
         res.json(replies);
     } catch (err) {
         console.log('Replies not found. Error: ' + err);
@@ -96,6 +107,7 @@ module.exports = {
     getAllReplies,
     getSingleReply,
     getRepliesByPostId,
+    getRepliesOrderedByPostTitle,
     createReply,
     deleteSingleReply,
     updateSingleReply,

@@ -13,6 +13,10 @@ router
     .get(replyController.getRepliesByPostId);
 
 router
+    .route('/orderedByPostTitle')
+    .get(replyController.getRepliesOrderedByPostTitle);
+
+router
     .route('/:replyId')
     .get(replyController.getSingleReply)
     .delete(replyController.deleteSingleReply)
