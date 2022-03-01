@@ -31,9 +31,24 @@ const deleteSingleCategory = async (primaryKey) => {
     return deletedCategory;
 };
 
+// Get and Update a single category via Primary Key
+const updateSingleCategory = async (primaryKey, updatePayload) => {
+    const updatedCategory = await Category.update(updatePayload, {
+        where: {
+            id: primaryKey
+        }
+    });
+    if (updatedCategory) {
+        const foundUpdatedCategory = await Category.findByPk(primaryKey);
+        return foundUpdatedCategory;
+    }
+    return null;
+};
+
 module.exports = {
     getAllCategories,
     getSingleCategory,
     createCategory,
     deleteSingleCategory,
+    updateSingleCategory,
 };

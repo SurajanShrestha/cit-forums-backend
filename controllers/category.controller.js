@@ -53,9 +53,28 @@ const deleteSingleCategory = async (req, res) => {
     }
 };
 
+// Get and Update a single category via Primary Key
+const updateSingleCategory = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { categoryId } = req.params;
+        const category = await categoryService.updateSingleCategory(categoryId, req.body);
+        if (category) {
+            console.log('**Category successfully updated');
+            res.json({ message: 'Category successfully updated', category });
+        } else {
+            throw new ApiError(404, 'Category not found');
+        }
+    } catch (err) {
+        console.log('Category could not be updated. Error: ' + err);
+        res.status(404).json({ message: 'Category could not be updated' });
+    }
+};
+
 module.exports = {
     getAllCategories,
     getSingleCategory,
     createCategory,
     deleteSingleCategory,
+    updateSingleCategory,
 };
