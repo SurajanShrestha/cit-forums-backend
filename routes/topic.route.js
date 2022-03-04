@@ -24,6 +24,7 @@ router
 router
     .route('/:topicId')
     .get(topicController.getSingleTopic)
-    .delete(topicController.deleteSingleTopic);
+    .delete(topicController.deleteSingleTopic)
+    .patch(topicController.updateSingleTopic);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const { categoryService } = require('../services');
+const ApiError = require('../utils/apiError');
 
 // Get all categories
 const getAllCategories = async (req, res) => {

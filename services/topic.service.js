@@ -10,7 +10,7 @@ const getAllTopics = async () => {
     containing all topic data along with user and post data in a "User": {//data} and "Posts": {//data} objects.
     Here, "Posts" is there instead of "Post" which explains our One to Many relation of Topic with Post.
     */
-    const topics = await Topic.findAll({ include: [User, Post] });
+    const topics = await Topic.findAll({ include: [Category, User, Post] });
     return topics;
 };
 
@@ -68,6 +68,20 @@ const deleteSingleTopic = async (primaryKey) => {
     return deletedTopic;
 };
 
+// Get and Update a single topic via Primary Key
+const updateSingleTopic = async (primaryKey, updatePayload) => {
+    const updatedTopic = await Topic.update(updatePayload, {
+        where: {
+            id: primaryKey
+        }
+    });
+    if (updatedTopic) {
+        const foundUpdatedTopic = await Topic.findByPk(primaryKey);
+        return foundUpdatedTopic;
+    }
+    return null;
+};
+
 module.exports = {
     getAllTopics,
     getSingleTopic,
@@ -76,4 +90,5 @@ module.exports = {
     getLatestTopics,
     createTopic,
     deleteSingleTopic,
+    updateSingleTopic,
 };

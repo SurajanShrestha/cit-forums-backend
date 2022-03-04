@@ -1,4 +1,5 @@
 const { topicService } = require('../services');
+const ApiError = require('../utils/apiError');
 
 // Get all topics
 const getAllTopics = async (req, res) => {
@@ -92,6 +93,24 @@ const deleteSingleTopic = async (req, res) => {
     }
 };
 
+// Get and Update a single topic via Primary Key
+const updateSingleTopic = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const { topicId } = req.params;
+        const topic = await topicService.updateSingleTopic(topicId, req.body);
+        if (topic) {
+            console.log('**Topic successfully updated');
+            res.json({ message: 'Topic successfully updated', topic });
+        } else {
+            throw new ApiError(404, 'Topic not found');
+        }
+    } catch (err) {
+        console.log('Topic could not be updated. Error: ' + err);
+        res.status(404).json({ message: 'Topic could not be updated' });
+    }
+};
+
 module.exports = {
     getAllTopics,
     getSingleTopic,
@@ -100,4 +119,5 @@ module.exports = {
     getLatestTopics,
     createTopic,
     deleteSingleTopic,
+    updateSingleTopic,
 };
