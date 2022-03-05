@@ -114,6 +114,24 @@ const updateSingleUser = async (req, res) => {
     }
 };
 
+// Update Password
+const updateUserPassword = async (req, res) => {
+    try {
+        console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
+        const user = await userService.updateUserPassword(req.body);
+        // In userService.updateSingleUser, we are updating user and sending the updated user data using findByPk method.
+        if (user) {
+            console.log('**Password successfully updated');
+            res.json({ message: 'Password successfully updated' });
+        } else {
+            throw new ApiError(404, 'User not found');
+        }
+    } catch (err) {
+        console.log('Password could not be updated. Error: ' + err);
+        res.status(404).json({ message: 'Password could not be updated' });
+    }
+};
+
 module.exports = {
     getAllUsers,
     getSingleUser,
@@ -122,4 +140,5 @@ module.exports = {
     createUser,
     deleteSingleUser,
     updateSingleUser,
+    updateUserPassword,
 };

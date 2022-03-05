@@ -76,6 +76,32 @@ const updateSingleUser = async (primaryKey, updatePayload) => {
     return null;
 };
 
+// Update user password
+const updateUserPassword = async (payload) => {
+    // const foundUser = await User.findByPk(primaryKey);
+    // const updatedUser = await foundUser.update({...foundUser, updatePayload });
+    // const updatedUser = await foundUser.update({ updatePayload });
+
+    // const updatedUser = await User.update(updatePayload, {
+    //     where: {
+    //         id: primaryKey
+    //     }
+    // });
+    const { userId, oldPassword, newPassword } = payload;
+    console.log(userId);
+    const foundUser = await User.findOne({
+        where: {
+            id: userId,
+            password: oldPassword
+        }
+    });
+    if (foundUser) {
+        const updatedUser = await foundUser.update({ ...foundUser, password: newPassword });
+        return updatedUser;
+    }
+    return null;
+};
+
 module.exports = {
     getAllUsers,
     getSingleUser,
@@ -84,4 +110,5 @@ module.exports = {
     createUser,
     deleteSingleUser,
     updateSingleUser,
+    updateUserPassword,
 };
