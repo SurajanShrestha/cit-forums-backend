@@ -43,11 +43,11 @@ const loginUser = async (req, res) => {
         if (user) {
             res.json({ message: 'Login Successful', user });
         } else {
-            throw new ApiError(404, 'User not found');
+            throw new ApiError(404, 'Server Error');
         }
     } catch (err) {
         console.log('User could not be logged in. Error: ' + err);
-        res.status(404).json({ message: 'User could not be logged in' });
+        res.status(404).json({ message: err });
     }
 };
 
@@ -59,11 +59,11 @@ const loginAdmin = async (req, res) => {
         if (user) {
             res.json({ message: 'Login Successful', user });
         } else {
-            throw new ApiError(404, 'Admin not found');
+            throw new ApiError(404, 'Server Error');
         }
     } catch (err) {
         console.log('Admin could not be logged in. Error: ' + err);
-        res.status(404).json({ message: 'Admin could not be logged in' });
+        res.status(404).json({ message: err });
     }
 };
 
@@ -128,7 +128,7 @@ const updateUserPassword = async (req, res) => {
         }
     } catch (err) {
         console.log('Password could not be updated. Error: ' + err);
-        res.status(404).json({ message: 'Password could not be updated' });
+        res.status(404).json({ message: err });
     }
 };
 

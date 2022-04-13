@@ -1,4 +1,5 @@
 const { User, Topic, Post } = require('../models');
+const bcrypt = require('bcryptjs');
 
 // Get all users
 const getAllUsers = async () => {
@@ -28,10 +29,17 @@ const loginUser = async (payload) => {
     const user = await User.findOne({
         where: {
             email: payload.email,
-            password: payload.password
+            RoleId: 2
         }
     });
-    return user;
+    if (user) {
+        if (bcrypt.compareSync(payload?.password, user?.password))
+            return user;
+        else
+            throw "Password does not match";
+    } else {
+        throw "User does not exist";
+    }
 };
 
 // Login/Find Admin by credentials
@@ -39,11 +47,17 @@ const loginAdmin = async (payload) => {
     const user = await User.findOne({
         where: {
             email: payload.email,
-            password: payload.password,
             RoleId: 1
         }
     });
-    return user;
+    if (user) {
+        if (bcrypt.compareSync(payload?.password, user?.password))
+            return user;
+        else
+            throw "Password does not match";
+    } else {
+        throw "User does not exist";
+    }
 };
 
 // Create/Register a user
@@ -88,18 +102,31 @@ const updateUserPassword = async (payload) => {
     //     }
     // });
     const { userId, oldPassword, newPassword } = payload;
-    console.log(userId);
     const foundUser = await User.findOne({
         where: {
             id: userId,
-            password: oldPassword
+            // password: oldPassword
         }
     });
     if (foundUser) {
-        const updatedUser = await foundUser.update({ ...foundUser, password: newPassword });
-        return updatedUser;
+        /*
+            foundUser?.password.length < 40 this code was for when I had just actual password stored in the database.
+            And I wanted to change it by calling the /users/updatePw api.
+        */
+        if (bcrypt.compareSync(oldPassword, foundUser?.password) || foundUser?.password.length < 40) {
+            const updatedUser = await foundUser.update({ ...foundUser, password: newPassword });
+            return updatedUser;
+        }
+        else
+            throw "Old Password does not match";
+    } else {
+        throw "User does not exist";
     }
-    return null;
+    // if (foundUser) {
+    //     const updatedUser = await foundUser.update({ ...foundUser, password: newPassword });
+    //     return updatedUser;
+    // }
+    // return null;
 };
 
 module.exports = {

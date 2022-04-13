@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database');
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 // Define Modals
 const User = sequelize.define('User', {
@@ -52,25 +52,24 @@ const User = sequelize.define('User', {
     }
 });
 
-// {
-//     hooks: {
-//         beforeBulkCreate: (user) => {
-//             if (user.password = user.password && user.password !== "") {
-//                 console.log('Before Bulk Create');
-//                 const salt = bcrypt.genSaltSync(10);
-//                 user.password = bcrypt.hashSync(user.password, salt);
-//             }
-//             console.log('Before Bulk Create');
-//             console.log(user);
-//         },
-//     }
-// }
+/* 
+    Only those hooks which have a name can be removed/deleted (if we want to delete them). 
+    So we gave this hook a name: "hashNewUserPassword"
+*/
+User.addHook('beforeCreate', 'hashUserPwBeforeCreate', (user) => {
+    var salt = bcrypt.genSaltSync(10);
+    var hashedPassword = bcrypt.hashSync(user?.password, salt);
+    user.password = hashedPassword;
+});
 
-// User.addHook('beforeBulkCreate', (user) => {
-//     console.log('Before Bulk Create');
-//     console.log(user);
-// });
+// ** IMPORTANT REM: For User.update, beforeBulkUpdate is triggered. **
 
-// User.Role = User.belongsTo(Role);
+// For User.findOne and then calling foundUser.update, beforeUpdate is triggered.
+// Runs just before User Password Update.
+User.addHook('beforeUpdate', 'hashUserPwBeforePwUpdate', (user) => {
+    var salt = bcrypt.genSaltSync(10);
+    var hashedPassword = bcrypt.hashSync(user?.password, salt);
+    user.password = hashedPassword;
+});
 
 module.exports = User;
