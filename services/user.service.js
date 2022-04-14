@@ -1,10 +1,24 @@
 const { User, Topic, Post } = require('../models');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { JWT } = require('../config');
 
 // Get all users
-const getAllUsers = async () => {
-    const users = await User.findAll();
-    return users;
+const getAllUsers = async (headers) => {
+    try {
+        let bearerToken = headers?.authorization.split(' ')[1];
+        // If jwt.verify fails then immediately catch block executes.
+        let decodedToken = jwt.verify(bearerToken, JWT.secret);
+        if (decodedToken) {
+            const users = await User.findAll();
+            return users;
+        }
+    } catch (err) {
+        if (err?.name === "JsonWebTokenError")
+            throw "Authentication Failed";
+        else
+            throw "Users could not be found";
+    }
 };
 
 // Get a single user via Primary Key
@@ -33,8 +47,11 @@ const loginUser = async (payload) => {
         }
     });
     if (user) {
-        if (bcrypt.compareSync(payload?.password, user?.password))
-            return user;
+        if (bcrypt.compareSync(payload?.password, user?.password)) {
+            const token = jwt.sign({ id: user?.id, email: user?.email }, JWT.secret);
+            return { ...user, token };
+            // return user;
+        }
         else
             throw "Password does not match";
     } else {
@@ -51,8 +68,11 @@ const loginAdmin = async (payload) => {
         }
     });
     if (user) {
-        if (bcrypt.compareSync(payload?.password, user?.password))
-            return user;
+        if (bcrypt.compareSync(payload?.password, user?.password)) {
+            const token = jwt.sign({ id: user?.id, email: user?.email }, JWT.secret);
+            return { ...user, token };
+            // return user;
+        }
         else
             throw "Password does not match";
     } else {
@@ -75,9 +95,6 @@ const deleteSingleUser = async (primaryKey) => {
 
 // Get and Update a single user via Primary Key
 const updateSingleUser = async (primaryKey, updatePayload) => {
-    // const foundUser = await User.findByPk(primaryKey);
-    // const updatedUser = await foundUser.update({...foundUser, updatePayload });
-    // const updatedUser = await foundUser.update({ updatePayload });
     const updatedUser = await User.update(updatePayload, {
         where: {
             id: primaryKey
@@ -92,15 +109,6 @@ const updateSingleUser = async (primaryKey, updatePayload) => {
 
 // Update user password
 const updateUserPassword = async (payload) => {
-    // const foundUser = await User.findByPk(primaryKey);
-    // const updatedUser = await foundUser.update({...foundUser, updatePayload });
-    // const updatedUser = await foundUser.update({ updatePayload });
-
-    // const updatedUser = await User.update(updatePayload, {
-    //     where: {
-    //         id: primaryKey
-    //     }
-    // });
     const { userId, oldPassword, newPassword } = payload;
     const foundUser = await User.findOne({
         where: {

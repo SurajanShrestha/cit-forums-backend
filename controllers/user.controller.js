@@ -5,11 +5,11 @@ const ApiError = require('../utils/apiError');
 const getAllUsers = async (req, res) => {
     try {
         console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
-        const users = await userService.getAllUsers();
+        const users = await userService.getAllUsers(req.headers);
         res.json(users);
     } catch (err) {
         console.log('Users not found. Error: ' + err);
-        res.status(404).json({ message: 'Users could not be found' });
+        res.status(404).json({ message: err });
     }
 };
 
@@ -41,7 +41,8 @@ const loginUser = async (req, res) => {
         console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
         const user = await userService.loginUser(req.body);
         if (user) {
-            res.json({ message: 'Login Successful', user });
+            // res.json({ message: 'Login Successful', user });
+            res.json({ message: 'Login Successful', user: user?.dataValues, accessToken: user?.token });
         } else {
             throw new ApiError(404, 'Server Error');
         }
@@ -57,7 +58,8 @@ const loginAdmin = async (req, res) => {
         console.log(`${req.method}: ${req.path} ${new Date().toString()}`);
         const user = await userService.loginAdmin(req.body);
         if (user) {
-            res.json({ message: 'Login Successful', user });
+            // res.json({ message: 'Login Successful', user });
+            res.json({ message: 'Login Successful', user: user?.dataValues, accessToken: user?.token });
         } else {
             throw new ApiError(404, 'Server Error');
         }
